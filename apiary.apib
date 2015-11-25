@@ -18,22 +18,109 @@ HOST: https://app.trayn.com/backend/rest
         }]
 
 ### Create a new plan [POST]
-+ Response 201 (application/json)
++ Response 201
 
 ### Update properties of a plan [PUT]
 + Response 200 (application/json)
 
-# Template [/s/macrocycle/{id}]
-## Details for a specific plan [GET]
+## Template [/s/macrocycle/{id}]
++ Parameters
+    + id - ID of the template
+### Details for a specific plan [GET]
 + Response 200 (application/json)
 
         {
           "id": 1, "duration": 50
         }
         
-## Delete a plan [DELETE]
+### Delete a plan [DELETE]
 Deletes a plan completely.
 + Response 204
+
+
+## Plan Periods [/s/macrocycle/{id}/period]
++ Parameters
+    + id - ID of the template
+### List [GET]
+Get a list of top-level plan periods. Periods are sorted by `start`.
++ Response 200 (application/json)
+
+### Create [POST]
+Create new top-level plan period.
++ Response 200
+
+        {
+          "name": "Preparation",
+          "short": "Pre",
+          "start": 87,
+          "subs": [{
+              name: "General preparation",
+              short: "Preps",
+              target: "General physical preparation"
+          }]
+        }
+
+### Delete [DELETE]
+Delete all plan periods for this macro template.
++ Response 204
+
+## Plan Period Sets [/s/macrocycle/{id}/period/set]
++ Parameters
+    + id - ID of the template
+### Create [POST]
+Create multiple plan periods
++ Response 200 (application/json)
+
+        [
+          {
+            name: "Preparation",
+            short: "Pre",
+            …
+          }, {
+            name: "In Season",
+            short: "Main",
+            …
+          }
+        ]
+
+## Plan Period [/s/macrocycle/{id}/period/{pId}]
++ Parameters
+    + id - ID of the template
+    + pId - ID of the period
+### Read [GET]
++ Response 200 (application/json)
+
+### Update [PUT]
++ Response 200 (application/json)
+
+### Delete [DELETE]
++ Response 204
+
+
+## Plan Sub Periods [/s/macrocycle/{id}/period/{pId}/subperiod]
++ Parameters
+    + id - ID of the template
+    + pId - ID of the period
+### Read [GET]
++ Response 200 (application/json)
+
+### Create [POST]
++ Response 201
+
+## Plan Sub Period [/s/macrocycle/{id}/period/{pId}/subperiod/{sId}]
++ Parameters
+    + id - ID of the template
+    + pId - ID of the period
+    + sId - ID of the sub period
+### Read [GET]
++ Response 200 (application/json)
+
+### Update [PUT]
++ Response 200 (application/json)
+
+### Delete [DELETE]
++ Response 204
+
 
 # Group Actual Plan
 
