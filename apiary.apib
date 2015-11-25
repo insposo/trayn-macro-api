@@ -3,7 +3,11 @@ HOST: https://app.trayn.com/backend/rest
 
 # Macro API 
 
-## Main Resource [/s/macrocycle]
+# Group Template
+
+**Plan Templates** are not assigned to a specific athlete and do not contain any date-related information. As soon as a template is assigned, all information from that template is transferred to the **Actual Plan** (see below) on the athlete.
+
+## Templates [/s/macrocycle]
 ### List all plans [GET]
 + Response 200 (application/json)
 
@@ -19,7 +23,7 @@ HOST: https://app.trayn.com/backend/rest
 ### Update properties of a plan [PUT]
 + Response 200 (application/json)
 
-# Single plan [/s/macrocycle/{id}]
+# Template [/s/macrocycle/{id}]
 ## Details for a specific plan [GET]
 + Response 200 (application/json)
 
@@ -30,6 +34,28 @@ HOST: https://app.trayn.com/backend/rest
 ## Delete a plan [DELETE]
 Deletes a plan completely.
 + Response 204
+
+# Group Actual Plan
+
+**Actual Plans** are a not-necessarily continuous set of workload assignments associated with the assignee of a plan. The association between the actual plan and its template is informative only and used to decide whether an update to a template should be transitively written to an actual plan.
+
+## Macro Plan [/s/athlete/{id}/macro]
++ Parameters
+    + id - athlete id
+### List all workloads [GET]
++ Response 200 (application/json)
+
+### Create new workload [POST]
++ Request (application/json)
+
+        {
+            "date": "2015-11-25",
+            "workload": {
+
+            }
+        }
+
++ Response 201
 
 # Group Planning Model
 The planning model is used to initialize plan period and sub-periods in a macrocycle. References between the planning periods used in the macrocycle and the configuration from the planning model are not required.
