@@ -1,0 +1,31 @@
+FORMAT: 1A
+HOST: https://app.trayn.com/backend/rest
+
+# Macro API 
+Notes API is a *short texts saving* service similar to its physical paper presence on your table.
+
+## Main Resource [/s/macrocycle]
+### List all plans [GET]
++ Response 200 (application/json)
+
+        [{
+          "id": 1, "duration": 50
+        }, {
+          "id": 2, "duration": 26
+        }]
+
+### Create a new plan [POST]
++ Response 201 (application/json)
+
+### Update properties of a plan [PUT]
++ Response 200 (application/json)
+
+# Single plan [/s/macrocycle/{id}]
+## Details for a specific plan [GET]
++ Response 200 (application/json)
+
+        {
+          "id": 1, "duration": 50
+        }
+        
+## Delete a plan [DELETE]
