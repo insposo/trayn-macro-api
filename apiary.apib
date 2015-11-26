@@ -39,7 +39,12 @@ Deletes a plan completely.
 + Response 204
 
 ## Template Configs [/s/macrocycle/{id}/config]
-Defines how values are edited and presented.
+Defines how values are edited and presented. Load types are mapped to a unit or calculated volume. The following mappings are defined for an interval
+
+- `SESSION`: number of sessions
+- `HOUR`: total workout hours
+- `UNIT_REFERENCE`: total weight moved, distance covered
+
 + Parameters
     + id - ID of the template
 ### List all configs for a plan [GET]
@@ -80,12 +85,70 @@ Defines how values are edited and presented.
               "type": "line"
             }, {
               "name": "Volume",
-              "type": "bar"
+              "type": "bar",
+              "defaults": {
+                "mapping": "SESSION",
+                "max": 8
+              }
             }, {
               "name": "Performance",
               "type": "line"
             }
           ]
+        }
+
++ Request Varied Intensity For Runners (application/json)
+
+        {
+          "type": "LOAD",
+          "name": "Distance",
+          "defaults": {
+            "mapping": "HOUR",
+            "max": 35
+          },
+          "loads": [{
+              "name": "Sprint",
+              "type": "bar"
+            }, {
+              "name": "Long Intervals",
+              "type": "bar"
+            }, {
+              "name": "Endurance",
+              "type": "bar"
+            }
+          ]
+        }
+
++ Request Triathlon (application/json)
+
+        {
+          "type": "LOAD",
+          "name": "Distance",
+          "loads": [{
+              "name": "Swim",
+              "type": "line",
+              "defaults": {
+                "mapping": "DISTANCE",
+                "unit": "km",
+                "max": 30
+              }
+            }, {
+              "name": "Bicycle",
+              "type": "line",
+              "defaults": {
+                "mapping": "DISTANCE",
+                "unit": "km",
+                "max": 1000
+              }
+            }, {
+              "name": "Run",
+              "type": "line",
+              "defaults": {
+                "mapping": "DISTANCE",
+                "unit": "km",
+                "max": 120
+              }
+            }]
         }
 
 + Request Focus Reference (application/json)
