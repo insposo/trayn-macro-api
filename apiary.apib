@@ -37,6 +37,41 @@ HOST: https://app.trayn.com/backend/rest
 Deletes a plan completely.
 + Response 204
 
+## Template Days [/s/macrocycle/{id}/day]
++ Parameters
+    + id - ID of the template
+### List [GET]
++ Response 200 (application/json)
+
+        [{
+          "index": 0
+          "workload": {
+            "unit": "h",
+            "value": [
+                {
+                    "name": "Medium Intensity",
+                    "value": 0.1
+                }, {
+                    "name": "Low Intensity",
+                    "value": 0.4
+                }
+            ]
+          }
+        }, {
+          "index": 7,
+          "workload": {
+            "unit": "h",
+            "value": [
+                {
+                    "name": "Medium Intensity",
+                    "value": 0.2
+                }, {
+                    "name": "High Intensity",
+                    "value": 0.35
+                }
+            ]
+          }
+        }]
 
 ## Plan Periods [/s/macrocycle/{id}/period]
 + Parameters
