@@ -47,34 +47,61 @@ Defines how values are edited and presented.
 
         [{
           "id": "wlc1",
-          "group": "LOAD_DISTANCE",
-          "name": "Medium Intensity",
-          "type": "PERCENT",
-          "visualization": "bar",
-          "unitgroup": "distance"
+          "type": "TEXT",
+          "name": "Performance and Testing"
         }, {
           "id": "wlc2",
-          "group": "LOAD_DISTANCE",
-          "name": "Low Intensity",
-          "type": "PERCENT",
-          "visualization": "bar",
-          "unitgroup": "distance"
-        }, {
-          "id": "wlc3",
-          "group": "FOCUS_SPORT_SPECIFIC",
-          "name": "Tactical Training",
-          "type": "INTEGER",
-          "visualization": "level",
-          "trainingArea": {"id": "ta21"} 
-        }, {
-          "id": "wlc4",
-          "name": "Medical Measures",
-          "type": "TEXT"
+          "type": "TEXT",
+          "name": "Medical Measures"
         }]
 
-### Create [PUT]
+### Create [POST]
++ Request Levels (application/json)
+
+        {
+          "type": "LEVELS",
+          "name": "Competitions"
+        }
+
++ Request Generic Text (application/json)
+
+        {
+          "type": "TEXT",
+          "name": "Training Camp"
+        }
+
++ Request Volume Intensity Graph (application/json)
+
+        {
+          "type": "LOAD",
+          "name": "Volume and Intensity",
+          "loads": [{
+              "name": "Intensity",
+              "type": "line"
+            }, {
+              "name": "Volume",
+              "type": "bar"
+            }, {
+              "name": "Performance",
+              "type": "line"
+            }
+          ]
+        }
+
++ Request Focus Reference (application/json)
+
+        {
+            "type": "FOCUS",
+            "focus": "FOCUS_STRENGTH",
+            "trainingAreas": [
+                {"id": "ta21"},
+                {"id": "ta22"},
+                {"id": "ta23"}
+            ]
+        }
+
 + Response 200 (application/json)
-        
+
 ## Template Config [/s/macrocycle/{id}/config/{cId}]
 + Parameters
     + id - ID of the template
