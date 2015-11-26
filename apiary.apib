@@ -23,9 +23,10 @@ HOST: https://app.trayn.com/backend/rest
 ### Update properties of a plan [PUT]
 + Response 200 (application/json)
 
-## Template [/s/macrocycle/{id}]
+## Template [/s/macrocycle/{id}{?with}]
 + Parameters
     + id - ID of the template
+    + with (optional) - list of entities to include, e.g. `config` or `value`
 ### Details for a specific plan [GET]
 + Response 200 (application/json)
 
@@ -37,41 +38,104 @@ HOST: https://app.trayn.com/backend/rest
 Deletes a plan completely.
 + Response 204
 
-## Template Days [/s/macrocycle/{id}/day]
+## Template Configs [/s/macrocycle/{id}/config]
+Defines how values are edited and presented.
++ Parameters
+    + id - ID of the template
+### List all configs for a plan [GET]
++ Response 200 (application/json)
+
+        [{
+          "id": "wlc1",
+          "group": "LOAD_DISTANCE",
+          "name": "Medium Intensity",
+          "type": "PERCENT",
+          "visualization": "bar",
+          "unitgroup": "distance"
+        }, {
+          "id": "wlc2",
+          "group": "LOAD_DISTANCE",
+          "name": "Low Intensity",
+          "type": "PERCENT",
+          "visualization": "bar",
+          "unitgroup": "distance"
+        }, {
+          "id": "wlc3",
+          "group": "FOCUS_SPORT_SPECIFIC",
+          "name": "Tactical Training",
+          "type": "INTEGER",
+          "visualization": "level",
+          "trainingArea": {"id": "ta21"} 
+        }, {
+          "id": "wlc4",
+          "name": "Medical Measures",
+          "type": "TEXT"
+        }]
+
+### Create [PUT]
++ Response 200 (application/json)
+        
+## Template Config [/s/macrocycle/{id}/config/{cId}]
++ Parameters
+    + id - ID of the template
+    + cId - ID of the config object
+### Read [GET]
++ Response 200 (application/json)
+
+### Update [PUT]
++ Response 200 (application/json)
+
+### Delete [DELETE]
++ Response 204
+
+## Template Values [/s/macrocycle/{id}/values]
+These are the actual contents of a plan. They refer to a plan and to a workload config.
 + Parameters
     + id - ID of the template
 ### List [GET]
 + Response 200 (application/json)
 
         [{
-          "index": 0
-          "workload": {
-            "unit": "h",
-            "value": [
-                {
-                    "name": "Medium Intensity",
-                    "value": 0.1
-                }, {
-                    "name": "Low Intensity",
-                    "value": 0.4
-                }
-            ]
-          }
+            "index": 0,
+            "workload": {id: "wlc1"},
+            "value": 0.1
         }, {
-          "index": 7,
-          "workload": {
-            "unit": "h",
-            "value": [
-                {
-                    "name": "Medium Intensity",
-                    "value": 0.2
-                }, {
-                    "name": "High Intensity",
-                    "value": 0.35
-                }
-            ]
-          }
+            "index": 0,
+            "workload": {id: "wlc2"},
+            "value": 0.4
+        }, {
+            "index": 0,
+            "workload": {id: "wlc3"},
+            "value": 2
+        }, {
+            "index": 2,
+            "workload": {id: "wlc1"},
+            "value": 0.25
+        }, {
+            "index": 2,
+            "workload": {id: "wlc2"},
+            "value": 0.3
+        }, {
+            "index": 2,
+            "workload": {id: "wlc4"},
+            "value": "Cardio Check"
         }]
+
+### Create [PUT]
++ Response 200 (application/json)
+        
+## Template Value [/s/macrocycle/{id}/values/{vId}]
++ Parameters
+    + id - ID of the template
+    + vId - ID of the value
+### Read [GET]
++ Response 200 (application/json)
+
+### Update [PUT]
++ Response 200 (application/json)
+
+### Delete [DELETE]
++ Response 204
 
 ## Plan Periods [/s/macrocycle/{id}/period]
 + Parameters
@@ -157,26 +221,98 @@ Create multiple plan periods
 + Response 204
 
 
+# Group Assigning Templates
+
+When a template is assigned to an athlete, the contents of it is individualized and copied to the athletes plan (see below).
+Values for workload configs that are specified as percent-values and are linked to a unit group can be individualized
+by defining a maximum value (= 100%) and selecting a unit.
+Existing data in the time range of the new assigned plan will be overwritten.
+
+## Assign To Athlete [/s/athlete/{id}/macro/{tId}]
++ Parameters
+    + id - id of athlete
+    + tId - id of macro template
+
+### Assign template [POST]
+
++ Request (application/json)
+
+        {
+            "date": "2015-11-25",
+            "workloadAdaption": [
+                {
+                    "group": "LOAD_DISTANCE",
+                    "unit": "km",
+                    "max": 150
+                },
+                {
+                    "group": "LOAD_WORKOUTS",
+                    "unit": "#",
+                    "max": 8
+                }
+            ]
+        }
+
++ Response 201 (application/json)
+
+
 # Group Actual Plan
 
-**Actual Plans** are a not-necessarily continuous set of workload assignments associated with the assignee of a plan. The association between the actual plan and its template is informative only and used to decide whether an update to a template should be transitively written to an actual plan.
+**Actual Plans** are a not-necessarily continuous set of workload configs and values associated with the assignee of a plan. The association between the actual plan and its template is informative only and used to decide whether an update to a template should be transitively written to an actual plan.
 
-## Macro Plan [/s/athlete/{id}/macro]
+## Macro Plan [/s/athlete/{id}/macro/{?start,end}]
 + Parameters
     + id - athlete id
+    + start (Date) - start date
+    + end (Date) - end date
+
 ### List all workloads [GET]
 + Response 200 (application/json)
+
+        {
+            "config": [
+                {
+                  "id": "awlc1",
+                  "group": "LOAD_DISTANCE",
+                  "name": "Medium Intensity",
+                  "type": "PERCENT",
+                  "visualization": "bar",
+                  "unit": "km",
+                  "date": "2015-10-14"
+                }, {
+                  "id": "awlc2",
+                  "group": "LOAD_DISTANCE",
+                  "name": "Low Intensity",
+                  "type": "PERCENT",
+                  "visualization": "bar",
+                  "unit": "km",
+                  "date": "2015-10-14"
+                }
+            ],
+            "values": [
+                {
+                    "id": "v1",
+                    "date": "2015-11-27",
+                    "workload": {"id": "awlc1"},
+                    "value": 30
+                }, {
+                    "id": "v2",
+                    "date": "2015-11-27",
+                    "workload": {"id": "awlc2"},
+                    "value": 120
+                }
+            ]
+        }
 
 ### Create new workload [POST]
 + Request (application/json)
 
         {
             "date": "2015-11-25",
-            "workload": {
-
-            }
+            "workload": {"id": "awlc1"},
+            "value": 18
         }
-
+        
 + Response 201
 
 # Group Planning Model
