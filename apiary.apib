@@ -64,26 +64,37 @@ Defines how values are edited and presented. Load types are mapped to a unit or 
 + Request Levels (application/json)
 
         {
+          "id": "id-a",
           "type": "LEVELS",
           "name": "Competitions"
+          "references": [{
+            "id": "id-a"
+          }]
         }
 
 + Request Generic Text (application/json)
 
         {
+          "id": "id-a",
           "type": "TEXT",
           "name": "Training Camp"
+          "references": [{
+            "id": "id-a"
+          }]
         }
 
 + Request Volume Intensity Graph (application/json)
 
         {
+          "id": "id-a",
           "type": "LOAD",
           "name": "Volume and Intensity",
-          "loads": [{
+          "references": [{
+              "id": "id-a1",
               "name": "Intensity",
               "type": "line"
             }, {
+              "id": "id-a2",
               "name": "Volume",
               "type": "bar",
               "defaults": {
@@ -91,6 +102,7 @@ Defines how values are edited and presented. Load types are mapped to a unit or 
                 "max": 8
               }
             }, {
+              "id": "id-a3",
               "name": "Performance",
               "type": "line"
             }
@@ -100,19 +112,23 @@ Defines how values are edited and presented. Load types are mapped to a unit or 
 + Request Varied Intensity For Runners (application/json)
 
         {
+          "id": "id-a",
           "type": "LOAD",
           "name": "Distance",
           "defaults": {
             "mapping": "HOUR",
             "max": 35
           },
-          "loads": [{
+          "references": [{
+              "id": "id-a1",
               "name": "Sprint",
               "type": "bar"
             }, {
+              "id": "id-a2",
               "name": "Long Intervals",
               "type": "bar"
             }, {
+              "id": "id-a3",
               "name": "Endurance",
               "type": "bar"
             }
@@ -122,9 +138,11 @@ Defines how values are edited and presented. Load types are mapped to a unit or 
 + Request Triathlon (application/json)
 
         {
+          "id": "id-a",
           "type": "LOAD",
           "name": "Distance",
-          "loads": [{
+          "references": [{
+              "id": "id-a1",
               "name": "Swim",
               "type": "line",
               "defaults": {
@@ -133,6 +151,7 @@ Defines how values are edited and presented. Load types are mapped to a unit or 
                 "max": 30
               }
             }, {
+              "id": "id-a2",
               "name": "Bicycle",
               "type": "line",
               "defaults": {
@@ -141,6 +160,7 @@ Defines how values are edited and presented. Load types are mapped to a unit or 
                 "max": 1000
               }
             }, {
+              "id": "id-a3",
               "name": "Run",
               "type": "line",
               "defaults": {
@@ -154,12 +174,13 @@ Defines how values are edited and presented. Load types are mapped to a unit or 
 + Request Focus Reference (application/json)
 
         {
+            "id": "id-a",
             "type": "FOCUS",
             "focus": "FOCUS_STRENGTH",
-            "trainingAreas": [
-                {"id": "ta21"},
-                {"id": "ta22"},
-                {"id": "ta23"}
+            "references": [
+                {"id": "id-a1", "trainingArea": "ta21"},
+                {"id": "id-a2", "trainingArea": "ta22"},
+                {"id": "id-a3", "trainingArea": "ta23"}
             ]
         }
 
